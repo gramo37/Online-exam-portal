@@ -2,15 +2,15 @@ const axios = require("axios");
 
 function setCookie(cname, cvalue, exdays) {
   const d = new Date();
-  d.setTime(d.getTime() + exdays * 24 * 60 * 60 * 1000);
+  d.setTime(d.getTime() + exdays * 23 * 60 * 60 * 1000);
   let expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
 function deleteCookie(cname) {
-  let cvalue = null
+  let cvalue = null;
   const d = new Date();
-  d.setTime(d.getTime() - (10 * 24 * 60 * 60 * 1000));
+  d.setTime(d.getTime() - 10 * 24 * 60 * 60 * 1000);
   let expires = "expires=" + d.toUTCString();
   document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
@@ -34,6 +34,17 @@ export const clearState = () => async (dispatch) => {
   dispatch({
     type: "RequireSendingLink",
   });
+};
+
+export const clearOtp = () => async (dispatch) => {
+  
+  dispatch({
+    type: "OTPSendRequire",
+  });
+  dispatch({
+    type: "OTPVerifyRequire",
+  });
+  
 };
 
 export const loginUser = (email, password) => async (dispatch) => {
@@ -73,26 +84,25 @@ export const loginUser = (email, password) => async (dispatch) => {
 export const logoutUser = () => async (dispatch) => {
   try {
     dispatch({
-      type: "RequireLogout"
-    })
+      type: "RequireLogout",
+    });
 
     deleteCookie("authToken");
 
     dispatch({
       type: "LogoutSuccess",
       payload: {
-        "success": "true",
-        "message": "Logout successful"
-      }
-    })
-
+        success: "true",
+        message: "Logout successful",
+      },
+    });
   } catch (error) {
     dispatch({
       type: "LogoutFailure",
-      payload: error.response.data
-    })
+      payload: error.response.data,
+    });
   }
-}
+};
 
 // Store details entered by user while signing in
 export const storeSignInDetails = (userCredentials) => async (dispatch) => {
@@ -279,27 +289,115 @@ export const verifyLink = (password, resetToken) => async (dispatch) => {
   }
 };
 
+// Send OTP for Email change
+export const sendOTPForEditEmail = (email) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "OTPSendRequire",
+    });
+
+    const link = `/api/v1/sendOtpEditEmail`;
+    const { data } = await axios.post(
+      link,
+      {
+        email,
+      },
+      {
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
+      }
+    );
+
+    dispatch({
+      type: "OTPSendSuccess",
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: "OTPSendFailure",
+      payload: error.response.data,
+    });
+  }
+};
+
+export const editEmail = (email) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "RequestEditName"
+    })
+
+    const link = `/api/v1/editEmail`;
+    const { data } = await axios.post(
+      link,
+      {
+        email,
+      },
+      {
+        Accept: "application/json",
+        "Content-Type": "application/json;charset=UTF-8",
+      }
+    );
+
+    dispatch({
+      type: "EditNameSuccess",
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: "EditNameFailure",
+      payload: error.response.data,
+    });
+  }
+}
+
 export const loadUser = () => async (dispatch) => {
   try {
     dispatch({
-      type: "loadUserRequest"
-    })
+      type: "loadUserRequest",
+    });
     const link = `/api/v1/loadUser`;
-    const { data } = await axios.get(
+    const { data } = await axios.get(link, {
+      Accept: "application/json",
+      "Content-Type": "application/json;charset=UTF-8",
+    });
+    dispatch({
+      type: "loadUserSuccess",
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: "loadUserFailure",
+      payload: error.response.data,
+    });
+  }
+};
+
+export const changeName = (name) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "RequestEditName",
+    });
+
+    const link = `/api/v1/editName`;
+
+    const { data } = await axios.post(
       link,
+      {
+        name,
+      },
       {
         Accept: "application/json",
         "Content-Type": "application/json;charset=UTF-8",
       }
     );
     dispatch({
-      type: "loadUserSuccess",
-      payload: data
-    })
+      type: "EditNameSuccess",
+      payload: data,
+    });
   } catch (error) {
     dispatch({
-      type: "loadUserFailure",
-      payload: error.response.data
-    })
+      type: "EditNameFailure",
+      payload: error.response.data,
+    });
   }
-}
+};

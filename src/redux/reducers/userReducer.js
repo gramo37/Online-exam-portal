@@ -18,20 +18,36 @@ export const userReducer = createReducer(initialState, {
     state.error = action.payload;
   },
 
+  RequestEditName: (state) => {
+    state.loading = true;
+    state.user = "";
+    state.error = "";
+  },
+  EditNameSuccess: (state, action) => {
+    state.loading = false;
+    state.user = action.payload;
+    state.error = "";
+  },
+  EditNameFailure: (state, action) => {
+    state.loading = false;
+    state.user = "";
+    state.error = action.payload;
+  },
+
   RequireLogout: (state) => {
-    state.loading= true;
-    state.user = ""
-    state.error = ""
+    state.loading = true;
+    state.user = "";
+    state.error = "";
   },
   LogoutSuccess: (state, action) => {
-    state.loading= false;
+    state.loading = false;
     state.user = action.payload;
-    state.error = ""
+    state.error = "";
   },
   LogoutFailure: (state, action) => {
-    state.loading= false;
-    state.user = ""
-    state.error = action.payload
+    state.loading = false;
+    state.user = "";
+    state.error = action.payload;
   },
 
   registerRequest: (state) => {
@@ -52,22 +68,22 @@ export const userReducer = createReducer(initialState, {
 
   loadUserRequest: (state) => {
     state.loading = true;
-    state.error = ""
+    state.error = "";
     state.user = "";
   },
   loadUserSuccess: (state, action) => {
     state.loading = false;
-    state.error = ""
+    state.error = "";
     state.user = action.payload;
   },
   loadUserFailure: (state, action) => {
     state.loading = false;
-    state.user = ""
+    state.user = "";
     state.error = action.payload;
   },
 });
 
-// Store details of sign in user
+// Store details of user before sign in
 export const createUserReducer = createReducer(
   {
     userCredentials: {},
@@ -103,55 +119,52 @@ export const OTPReducer = createReducer(
     },
 
     OTPVerifyRequire: (state) => {
-        state.otpStatus = "";
-        state.otpStatus = "";
+      state.otpStatus = "";
+      state.otpStatus = "";
     },
     OTPVerifySuccess: (state, action) => {
-        state.otpStatus = action.payload;
-        state.error = ""
+      state.otpStatus = action.payload;
+      state.error = "";
     },
     OTPVerifyFailure: (state, action) => {
-        state.otpStatus = "";
-        state.error = action.payload
-    }
-    
+      state.otpStatus = "";
+      state.error = action.payload;
+    },
   }
 );
 
-export const verificationLinkReducer = createReducer({}, {
-  RequireSendingLink : (state) => {
-    state.linkStatus = ""
-    state.error = ""
-  },
-  SendingLinkSuccess : (state, action) => {
-    state.linkStatus = action.payload
-    state.error = ""
-  },
-  SendingLinkFailure : (state, action) => {
-    state.linkStatus = ""
-    state.error = action.payload
-  },
+export const verificationLinkReducer = createReducer(
+  {},
+  {
+    RequireSendingLink: (state) => {
+      state.linkStatus = "";
+      state.error = "";
+    },
+    SendingLinkSuccess: (state, action) => {
+      state.linkStatus = action.payload;
+      state.error = "";
+    },
+    SendingLinkFailure: (state, action) => {
+      state.linkStatus = "";
+      state.error = action.payload;
+    },
 
-  RequireVerifyingLink : (state) => {
-    state.linkStatus = ""
-    state.error = ""
-  },
-  VerifyingLinkSuccess : (state, action) => {
-    state.linkStatus = action.payload
-    state.error = ""
-  },
-  VerifyingLinkFailure : (state, action) => {
-    state.linkStatus = ""
-    state.error = action.payload
+    RequireVerifyingLink: (state) => {
+      state.linkStatus = "";
+      state.error = "";
+    },
+    VerifyingLinkSuccess: (state, action) => {
+      state.linkStatus = action.payload;
+      state.error = "";
+    },
+    VerifyingLinkFailure: (state, action) => {
+      state.linkStatus = "";
+      state.error = action.payload;
+    },
   }
-})
-
-
-
-
-
+);
 
 // Process of Sign Up
 
 // First the details entered by user are stored in state
-// 
+//

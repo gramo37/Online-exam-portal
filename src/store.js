@@ -3,13 +3,17 @@
 
 import {configureStore} from "@reduxjs/toolkit";
 import { createUserReducer, OTPReducer, userReducer, verificationLinkReducer } from "./redux/reducers/userReducer";
+import {questionReducers, questionFunctionReducers} from "./redux/reducers/questionReducer"
 
 const store = configureStore({
     reducer: {
         user: userReducer,
         signInDetails: createUserReducer,
         otp: OTPReducer,
-        linkStatus: verificationLinkReducer
+        linkStatus: verificationLinkReducer,
+
+        questions: questionReducers,
+        questionsFunction: questionFunctionReducers
     }
 });
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SecurityIcon from "@mui/icons-material/Security";
 import { useDispatch, useSelector } from "react-redux";
-import { signInUser, verifyOTP } from "../../redux/actions/userAction";
+import { signInUser, verifyOTP, loadUser } from "../../redux/actions/userAction";
 import { useAlert } from "react-alert";
 import { useNavigate } from "react-router";
 import LoadingBar from "react-top-loading-bar";
@@ -75,6 +75,8 @@ const VerifyOTP = () => {
         signInDetails.userCredentials.role
       )
     );
+    setProgress(80)
+    await dispatch(loadUser());
     setProgress(100)
     // setotp("");
   };

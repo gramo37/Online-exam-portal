@@ -47,7 +47,7 @@ const Navbar = (props) => {
 
   return (
     <>
-      <nav className="flex justify-around items-center bg-white shadow-md">
+      <nav className="sticky top-0 right-0 flex justify-around items-center bg-white shadow-md">
         <Link to="/">
           <div className="w-20 cursor-pointer">
             <img src={image} alt="" />
@@ -79,7 +79,7 @@ const Navbar = (props) => {
           </ul>
         </div>
         <div className="cursor-pointer flex justify-center items-center">
-          <Avatar sx={{ bgcolor: deepOrange[500] }}></Avatar>
+          <Avatar sx={{ bgcolor: deepOrange[500] }}>{user.user?.user?.name.substring(0, 1)}</Avatar>
           <div
             className=""
             onClick={() => {
@@ -88,15 +88,14 @@ const Navbar = (props) => {
           >
             <ArrowDropDownIcon />
           </div>
-        </div>
         <div
           className={`${
-            showOptions ? "opacity-100" : "opacity-0"
-          } absolute translate-x-72 translate-y-[6.8rem] bg-white px-2 py-4 rounded-md`}
+            showOptions ? "z-10 translate-y-16" : "-z-10 -translate-y-40"
+          } transition-all -translate-x-2 absolute top-0 bg-white px-2 py-4 shadow-lg border-2 rounded-md`}
         >
           <ul>
             <li className="hover:bg-gray-300 px-2 py-3 cursor-pointer rounded-md">
-              Show Profile
+              Change Password
             </li>
             <li
               onClick={() => logout()}
@@ -105,6 +104,7 @@ const Navbar = (props) => {
               Log Out
             </li>
           </ul>
+        </div>
         </div>
       </nav>
     </>
