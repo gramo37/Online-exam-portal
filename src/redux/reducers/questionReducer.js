@@ -67,3 +67,20 @@ export const questionFunctionReducers = createReducer({},{
     },
 })
 
+export const optionReducer = createReducer({}, {
+    RequireDeleteOption: (state) => {
+        state.loading= true;
+        state.options="";
+        state.error=""
+    },
+    DeleteOptionSuccess: (state, action) => {
+        state.loading= false;
+        state.options=action.payload;
+        state.error=""
+    },
+    DeleteOptionFailure: (state, action) => {
+        state.loading= false;
+        state.options="";
+        state.error=action.payload
+    }
+})

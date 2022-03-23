@@ -46,7 +46,7 @@ const TeacherHome = () => {
           </div>
         )}
 
-        <div className="w-2/6 sticky top-20 right-0 mx-2 flex flex-col">
+        <div className={`w-2/6 sticky top-20 right-0 mx-2 flex flex-col`}>
           <div className="bg-white border-2 shadow-sm my-2 p-3 rounded-md">
             <h2 className="text-center text-2xl font-semibold">My Profile</h2>
             <div className="text-left my-2 text-md font-semibold italic">
@@ -85,7 +85,7 @@ const TeacherHome = () => {
             </div>
             <button
               onClick={() => setAddQuestionModalToggle(!addQuestionModalToggle)}
-              className="bg-blue-300 hover:bg-blue-500 my-2 mx-2 px-4 py-2 rounded-md"
+              className="bg-blue-300 hover:bg-blue-500 my-2 mx-2 px-4 py-2 rounded-md cursor-pointer"
             >
               Add Question
             </button>
@@ -101,6 +101,7 @@ const TeacherHome = () => {
           <Modal
             Form={
               <AddQuestionForm
+                // question={props.question}
                 toggle={() =>
                   setAddQuestionModalToggle(!addQuestionModalToggle)
                 }
@@ -119,7 +120,9 @@ const TeacherHome = () => {
 
         {editEmail && (
           <Modal
-            Form={<EditProfileEmailForm toggle={() => seteditEmail(!editEmail)} />}
+            Form={
+              <EditProfileEmailForm toggle={() => seteditEmail(!editEmail)} />
+            }
             toggle={() => seteditEmail(!editEmail)}
           />
         )}

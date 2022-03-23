@@ -53,59 +53,87 @@ export const createQuestion =
     }
   };
 
-  export const editQuestion = (id, question, options, answer) => async (dispatch) => {
+export const editQuestion =
+  (id, question, options, answer) => async (dispatch) => {
     try {
-        dispatch({
-          type: "RequireEditQuestion",
-        });
-        const link = `/api/v1/updateQuestion/${id}`;
-        const { data } = await axios.post(
-          link,
-          {
-            question,
-            options,
-            answer
-          },
-          {
-            Accept: "application/json",
-            "Content-Type": "application/json;charset=UTF-8",
-          }
-        );
-  
-        dispatch({
-          type: "EditQuestionSuccess",
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: "EditQuestionFailure",
-          payload: error.response.data,
-        });
-      }
-  }
+      dispatch({
+        type: "RequireEditQuestion",
+      });
+      const link = `/api/v1/updateQuestion/${id}`;
+      const { data } = await axios.post(
+        link,
+        {
+          question,
+          options,
+          answer,
+        },
+        {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+        }
+      );
 
-  export const deleteQuestion = (id) => async (dispatch) => {
-    try {
-        dispatch({
-          type: "RequireDeleteQuestion",
-        });
-        const link = `/api/v1/deleteQuestion/${id}`;
-        const { data } = await axios.delete(
-          link,
-          {
-            Accept: "application/json",
-            "Content-Type": "application/json;charset=UTF-8",
-          }
-        );
-  
-        dispatch({
-          type: "DeleteQuestionSuccess",
-          payload: data,
-        });
-      } catch (error) {
-        dispatch({
-          type: "DeleteQuestionFailure",
-          payload: error.response.data,
-        });
-      }
+      dispatch({
+        type: "EditQuestionSuccess",
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: "EditQuestionFailure",
+        payload: error.response.data,
+      });
+    }
+  };
+
+export const deleteQuestion = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "RequireDeleteQuestion",
+    });
+    const link = `/api/v1/deleteQuestion/${id}`;
+    const { data } = await axios.delete(link, {
+      Accept: "application/json",
+      "Content-Type": "application/json;charset=UTF-8",
+    });
+
+    dispatch({
+      type: "DeleteQuestionSuccess",
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: "DeleteQuestionFailure",
+      payload: error.response.data,
+    });
   }
+};
+
+export const deleteOption = (index, id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "RequireDeleteOption",
+    });
+
+    const { data } = await axios.post(
+      `api/v1/deleteOption/${id}`,
+      { index: index }
+    );
+    console.log(data);
+
+    dispatch({
+      type: "DeleteOptionSuccess",
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: "DeleteOptionFailure",
+      payload: error.response.data,
+    });
+  }
+};
+
+export const clearOption = () => async (dispatch) => {
+  dispatch({
+    type: "RequireDeleteOption",
+  });
+}

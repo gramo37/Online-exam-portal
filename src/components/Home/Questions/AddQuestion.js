@@ -1,20 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Option from "./Option";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import {
   createQuestion,
   getQuestions,
+  clearOption,
 } from "../../../redux/actions/questionAction";
 const AddQuestionForm = (props) => {
-  
   const dispatch = useDispatch();
-  
-  const [optionsArray, setoptionsArray] = useState([1, 2]);
+
+  const [optionsArray, setoptionsArray] = useState([]);
+
+  const optionStatus = useSelector((state) => state.options);
 
   // UseStates
   const [options, setoptions] = useState([]);
   const [question, setquestion] = useState("");
   const [answer, setanswer] = useState(0);
+
+  useEffect(() => {
+    console.log(optionStatus);
+    if (optionStatus.error !== "" && optionStatus.error !== undefined) {
+      let newArr = [...optionsArray];
+      newArr.splice(-1, 1);
+      setoptionsArray(newArr);
+      dispatch(clearOption());
+    } else if (
+      optionStatus.options !== "" &&
+      optionStatus.options !== undefined
+    ) {
+      setoptions(optionStatus.options.options);
+      console.log(optionStatus.options.options);
+      let newArr = [];
+      for (let i = 0; i < optionStatus.options.options.length; i++) {
+        newArr[i] = i;
+      }
+      setoptionsArray(newArr);
+      dispatch(clearOption());
+    }
+  }, [optionStatus]);
 
   // Functions
   const addQuestion = async () => {
@@ -38,6 +63,16 @@ const AddQuestionForm = (props) => {
     let newArr = [...options];
     newArr[index] = e.target.value;
     setoptions(newArr);
+  };
+
+  const deleteThisOption = (index) => {
+    console.log(index);
+    let newArr = [...optionsArray];
+    newArr.splice(index, 1);
+    setoptionsArray(newArr);
+    newArr = [...options]
+    newArr.splice(index, 1);
+    setoptions(newArr)
   };
 
   return (
@@ -67,6 +102,8 @@ const AddQuestionForm = (props) => {
             {optionsArray.map((item, index) => {
               return (
                 <Option
+                  onClick={deleteThisOption}
+                  index={index}
                   key={index}
                   name={`option${index + 1}`}
                   optionValue={options[index]}

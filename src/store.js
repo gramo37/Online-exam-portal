@@ -3,7 +3,7 @@
 
 import {configureStore} from "@reduxjs/toolkit";
 import { createUserReducer, OTPReducer, userReducer, verificationLinkReducer } from "./redux/reducers/userReducer";
-import {questionReducers, questionFunctionReducers} from "./redux/reducers/questionReducer"
+import {questionReducers, questionFunctionReducers, optionReducer} from "./redux/reducers/questionReducer"
 
 const store = configureStore({
     reducer: {
@@ -13,7 +13,8 @@ const store = configureStore({
         linkStatus: verificationLinkReducer,
 
         questions: questionReducers,
-        questionsFunction: questionFunctionReducers
+        questionsFunction: questionFunctionReducers,
+        options: optionReducer
     }
 });
 

@@ -1,7 +1,8 @@
 import React from "react";
+import CloseIcon from '@mui/icons-material/Close';
+
 
 const Option = (props) => {
-
   return (
     <>
       <div className="flex items-center justify-center w-full">
@@ -16,6 +17,8 @@ const Option = (props) => {
           value={props.optionValue}
           onChange={props.onOptionValueChange}
         />
+        
+        <div onClick={()=>{props.onClick(props.index)}} style={{transform: "translateX(15.5rem)"}} className="cursor-pointer absolute translate-x-[15rem]"><CloseIcon /></div>
       </div>
     </>
   );

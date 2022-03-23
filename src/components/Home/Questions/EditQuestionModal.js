@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Option from "./Option";
-import { useDispatch } from "react-redux";
-import { getQuestions, editQuestion } from "../../../redux/actions/questionAction";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getQuestions,
+  editQuestion,
+  deleteOption,
+  clearOption,
+} from "../../../redux/actions/questionAction";
+import axios from "axios";
 
 const EditQuestionForm = (props) => {
+
   const [optionsArray, setoptionsArray] = useState([]);
 
+  const optionStatus = useSelector((state)=>state.options)
+
   const dispatch = useDispatch();
+
+  const [deleteOptionPressed, setdeleteOptionPressed] = useState(false)
 
   const [options, setoptions] = useState(props.question?.options);
   const [question, setquestion] = useState(props.question?.question);
@@ -20,9 +31,29 @@ const EditQuestionForm = (props) => {
     setoptionsArray(newArr);
   }, []);
 
+  useEffect(()=>{
+    console.log(optionStatus)
+    if(optionStatus.error !== "" && optionStatus.error !== undefined) {
+      let newArr = [...optionsArray]
+      newArr.splice(-1, 1)
+      setoptionsArray(newArr)
+      dispatch(clearOption())
+    } else if (optionStatus.options !== "" && optionStatus.options !== undefined) {
+      setoptions(optionStatus.options.options);
+      console.log(optionStatus.options.options)
+      let newArr = [];
+      for (let i = 0; i < optionStatus.options.options.length; i++) {
+        newArr[i] = i;
+      }
+      setoptionsArray(newArr);
+      dispatch(clearOption())
+    }
+  },[optionStatus])
+
   const editThisQuestion = async () => {
     console.log(options);
     console.log(question, answer);
+
     await dispatch(
       editQuestion(props.question?._id, question, options, answer)
     );
@@ -43,6 +74,12 @@ const EditQuestionForm = (props) => {
     let newArr = [...options];
     newArr[index] = e.target.value;
     setoptions(newArr);
+  };
+
+  const deleteThisOption = async (index) => {
+    console.log(index);
+    await dispatch(deleteOption(index, props.question._id));
+    setdeleteOptionPressed(true);
   };
 
   return (
@@ -67,12 +104,17 @@ const EditQuestionForm = (props) => {
             />
           </div>
 
-          <div className="flex flex-col items-center justify-center">
+          <div
+            
+            className="flex flex-col items-center justify-center"
+          >
             <h2 className="italic font-semibold text-lg">Add Options</h2>
             {optionsArray.map((item, index) => {
               return (
                 <Option
                   key={index}
+                  index={index}
+                  onClick={deleteThisOption}
                   name={`option${index + 1}`}
                   optionValue={options[index]}
                   onOptionValueChange={(e) => {

@@ -47,7 +47,7 @@ const Navbar = (props) => {
 
   return (
     <>
-      <nav className="sticky top-0 right-0 flex justify-around items-center bg-white shadow-md">
+      <nav className="z-40 sticky top-0 right-0 flex justify-around items-center bg-white shadow-md">
         <Link to="/">
           <div className="w-20 cursor-pointer">
             <img src={image} alt="" />
