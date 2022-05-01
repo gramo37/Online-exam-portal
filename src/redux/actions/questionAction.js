@@ -134,6 +134,6 @@ export const deleteOption = (index, id) => async (dispatch) => {
 
 export const clearOption = () => async (dispatch) => {
   dispatch({
-    type: "RequireDeleteOption",
+    type: "ClearDeleteOption",
   });
 }

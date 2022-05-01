@@ -10,6 +10,8 @@ import "./teacherHome.css";
 import Modal from "../Modal/Modal";
 import EditProfileNameForm from "./Profile/EditProfileName";
 import EditProfileEmailForm from "./Profile/EditProfileEmail";
+import SearchPerson from "./SearchPerson";
+import CreateExamForm from "./Exam/CreateExamForm";
 
 const TeacherHome = () => {
   const dispatch = useDispatch();
@@ -19,9 +21,13 @@ const TeacherHome = () => {
   const [addQuestionModalToggle, setAddQuestionModalToggle] = useState(false);
   const [editName, seteditName] = useState(false);
   const [editEmail, seteditEmail] = useState(false);
+  const [createExamModalToggle, setcreateExamModalToggle] = useState(false)
 
-  // const user = useSelector((state) => state.user);
   const questions = useSelector((state) => state.questions);
+
+  const createExam = async () => {
+    setcreateExamModalToggle(!createExamModalToggle)
+  }
 
   // useEffect
   useEffect(() => {
@@ -35,14 +41,18 @@ const TeacherHome = () => {
   return (
     <>
       <div className="flex justify-center items-start">
+
         {questions.loading ? (
           <Loader />
         ) : (
-          <div className="slowLoad flex flex-col w-4/6">
-            {!questions.loading &&
-              questions?.questions?.questions?.map((item) => {
-                return <Question question={item} key={item._id} />;
-              })}
+          <div className="flex flex-col slowLoad w-4/6">
+            <SearchPerson searchFor="Student" />
+            <div className="slowLoad flex flex-col w-full">
+              {!questions.loading &&
+                questions?.questions?.questions?.map((item) => {
+                  return <Question question={item} key={item._id} />;
+                })}
+            </div>
           </div>
         )}
 
@@ -75,6 +85,20 @@ const TeacherHome = () => {
               Role: {user.user?.user?.role}
             </div>
           </div>
+
+          <div className="bg-white border-2 shadow-sm my-2 p-3 rounded-md">
+            <h2 className="text-center text-2xl font-semibold">Student Details</h2>
+            <div className="text-left my-2 text-md font-semibold italic">
+              No of Students:{" "}
+              <span className="italic font-normal">
+                {user?.user?.user?.students.length}
+              </span>
+            </div>
+            <button className="bg-blue-300 hover:bg-blue-500 my-2 mx-2 px-4 py-2 rounded-md">
+              <Link to="/studentsList">Students List</Link>
+            </button>
+          </div>
+
           <div className="bg-white border-2 shadow-sm my-2 p-3 rounded-md">
             <h2 className="text-center text-2xl font-semibold">Exam Details</h2>
             <div className="text-left my-2 text-md font-semibold italic">
@@ -90,10 +114,17 @@ const TeacherHome = () => {
               Add Question
             </button>
 
-            <button className="bg-blue-300 hover:bg-blue-500 my-2 mx-2 px-4 py-2 rounded-md">
-              <Link to="editProfile">Start Exam</Link>
+            <button onClick={createExam} className="bg-blue-300 hover:bg-blue-500 my-2 mx-2 px-4 py-2 rounded-md">
+              Create Exam
             </button>
+
+            <Link to='/myExams'>
+              <button onClick={createExam} className="bg-blue-300 hover:bg-blue-500 my-2 mx-2 px-4 py-2 rounded-md">
+                Show My Exams
+              </button>
+            </Link>
           </div>
+
         </div>
 
         {/* Modals */}
@@ -124,6 +155,15 @@ const TeacherHome = () => {
               <EditProfileEmailForm toggle={() => seteditEmail(!editEmail)} />
             }
             toggle={() => seteditEmail(!editEmail)}
+          />
+        )}
+        {createExamModalToggle && (
+          <Modal
+            Form={
+              <CreateExamForm toggle={() => setcreateExamModalToggle(!createExamModalToggle)} />
+              // <EditProfileEmailForm />
+            }
+            toggle={() => setcreateExamModalToggle(!createExamModalToggle)}
           />
         )}
       </div>

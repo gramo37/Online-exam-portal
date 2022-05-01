@@ -82,5 +82,10 @@ export const optionReducer = createReducer({}, {
         state.loading= false;
         state.options="";
         state.error=action.payload
+    },
+    ClearDeleteOption: (state) => {
+        state.loading=false;
+        state.options="";
+        state.error=""
     }
 })

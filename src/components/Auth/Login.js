@@ -52,7 +52,6 @@ const Login = () => {
     setisLoginClicked(true)
     // Dispatch Login 
     await dispatch(loginUser(userCredentials.email, userCredentials.password));
-    await dispatch(loadUser());
     setProgress(100)
     console.log(userCredentials)
     // setLoginIsClicked(true)

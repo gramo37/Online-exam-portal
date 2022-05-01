@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Option from "./Option";
 import { useDispatch, useSelector } from "react-redux";
+import CloseIcon from '@mui/icons-material/Close';
 
 import {
   createQuestion,
@@ -105,6 +106,7 @@ const AddQuestionForm = (props) => {
                   onClick={deleteThisOption}
                   index={index}
                   key={index}
+                  Component={<CloseIcon />}
                   name={`option${index + 1}`}
                   optionValue={options[index]}
                   onOptionValueChange={(e) => {

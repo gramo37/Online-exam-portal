@@ -77,6 +77,7 @@ const Navbar = (props) => {
               <Link to="/contact">Contact Us</Link>
             </li>
           </ul>
+
         </div>
         <div className="cursor-pointer flex justify-center items-center">
           <Avatar sx={{ bgcolor: deepOrange[500] }}>{user.user?.user?.name.substring(0, 1)}</Avatar>

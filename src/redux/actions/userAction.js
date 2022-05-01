@@ -360,6 +360,7 @@ export const loadUser = () => async (dispatch) => {
       Accept: "application/json",
       "Content-Type": "application/json;charset=UTF-8",
     });
+    console.log(data)
     dispatch({
       type: "loadUserSuccess",
       payload: data,

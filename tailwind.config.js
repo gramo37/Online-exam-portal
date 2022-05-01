@@ -11,7 +11,10 @@ module.exports = {
     "./src/components/Modal/Option.js",
     "./src/components/Auth/Login.js",
     "./src/components/Auth/Signup.js",
-    "./src/components/Navbar/Navbar.js"
+    "./src/components/Navbar/Navbar.js",
+    "./src/components/Home/SearchPerson.js",
+    "./src/components/profiles/StudentProfile.js",
+    "./src/components/Home/Exam/CreateExamForm.js"
   ],
   theme: {
     extend: {},

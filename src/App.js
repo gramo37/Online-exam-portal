@@ -16,6 +16,10 @@ import About from './components/About/About';
 import {useDispatch } from "react-redux";
 import { loadUser } from './redux/actions/userAction';
 import Contact from './components/Contact/Contact';
+import StudentProfile from './components/profiles/StudentProfile';
+import ShowMyStudents from './components/profiles/ShowMyStudents';
+import StartExam from './components/Home/Exam/StartExam';
+import MyExams from './components/Home/Exam/MyExams';
 
 function App() {
 
@@ -31,6 +35,10 @@ function App() {
       <Router>
         <Routes>
           <Route exact path="/home" element={<Home />} />
+          <Route exact path="/student/:id" element={<StudentProfile />} />
+          <Route exact path="/studentsList" element={<ShowMyStudents />} />
+          <Route exact path="/exam/start/:examId" element={<StartExam />}/>
+          <Route exact path="/myExams" element={<MyExams />}/>
           <Route exact path="/about" element={<About />} />
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/signup" element={<Signup />} />

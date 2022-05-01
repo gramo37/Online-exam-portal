@@ -58,7 +58,7 @@ const EditProfileEmailForm = (props) => {
         progress={progress}
         onLoaderFinished={() => setProgress(0)}
       />
-      {!showOtpWindow ? <div className="w-full lg:w-1/2 opacity-100 bg-white z-20">
+      {!showOtpWindow ? <div className="w-full opacity-100 bg-white z-20">
         <div className="flex px-4 py-4 m-auto ">
           <div className="flex flex-col w-full">
             <h2 className="text-center text-lg font-semibold">Edit Email</h2>
