@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react'
+import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
 import { getMyExam } from '../../../redux/actions/schoolAction'
-import { calculateScore } from '../../../redux/actions/schoolAction'
+import Navbar from '../../Navbar/Navbar'
+import MyExam from './MyExam'
 const MyExams = () => {
 
     const dispatch = useDispatch()
+    const alert = useAlert()
     const myExam = useSelector((state) => state.myExam);
-
-    const user = useSelector((state) => state.user);
-
-    const calScoreClicked = async (id) => {
-        await dispatch(calculateScore(id))
-    }
+    const score = useSelector((state) => state.score);
 
     useEffect(async () => {
         await dispatch(getMyExam())
@@ -21,55 +19,37 @@ const MyExams = () => {
         console.log(myExam)
     }, [myExam])
 
+    useEffect(async () => {
+        console.log(score)
+        if(!score.loading) {
+            if(score.error === "" && score.user !== "") {
+                alert.success("Score Successfully Calculated")
+                await dispatch(getMyExam())
+            } else if(score.error !== "" && score.user === "") {
+                alert.error("Something Went Wrong!!")
+            }
+        }
+    }, [score])
+
     return (
         <>
-            {
+            <Navbar />
+            <h2 className='font-bold text-lg text-center'>Exams with scores to be Calculated.</h2>
+            {myExam?.exam?.exams?.length === 0 ? <h2 className='italic text-center'>No Exams to Display</h2> : 
                 myExam?.exam?.exams?.map((item) => {
                     return (
                         <>
-                            <div className='my-2 mx-2 bg-white rounded-md p-2'>
-                                <div className='flex justify-center items-center'>
-                                    <div className='mx-2 my-2'>
-                                        <div className='flex'>
-                                            <span className='font-bold mx-2'>Exam id: </span>
-                                            <div className='italic'>{item.exam._id}</div>
-                                        </div>
-                                        <div className='flex'>
-                                            <span className='font-bold mx-2'>No of Questions: </span>
-                                            <div className='italic'>{item.exam.questions.length}</div>
-                                        </div>
-                                        <div className='flex'>
-                                            <span className='font-bold mx-2'>No of Responses: </span>
-                                            <div className='italic'>{item.responses}</div>
-                                        </div>
-                                    </div>
-                                    <div className='mx-2 my-2'>
-                                        <div className='flex'>
-                                            <span className='font-bold mx-2'>Exam Start Date: </span>
-                                            <div className='italic'>{item.exam.examStartDate}</div>
-                                        </div>
-                                        <div className='flex'>
-                                            <span className='font-bold mx-2'>Exam Expiry Date: </span>
-                                            <div className='italic'>{item.exam.examExpiryDate}</div>
-                                        </div>
-                                        <div className='flex'>
-                                            <span className='font-bold mx-2'>No Of Responses Left: </span>
-                                            <div className='italic'>{user.user?.user?.students.length - item.responses}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                    <div className='flex justify-around items-center my-2'>
-                                        <div className='mx-2'>
-                                            <button className='bg-blue-400 p-2 rounded-md' onClick={()=>calScoreClicked(item._id)}>Calculate Score</button>
-                                        </div>
-                                        <div className='mx-2'>
-                                            <button className='bg-blue-400 p-2 rounded-md'>Delete Exam</button>
-                                        </div>
-                                        <div className='mx-2'>
-                                            <button className='bg-blue-400 p-2 rounded-md'>Edit Exam</button>
-                                        </div>
-                                    </div>
-                            </div>
+                            <MyExam item={item} isCalculated={false}/>
+                        </>
+                    )
+                })
+            }
+            <h2 className='font-bold text-lg text-center'>Exams with Calculated Scores</h2>
+            {myExam?.exam?.calculatedExams?.length === 0 ? <h2 className='italic text-center'>No Exams to Display</h2> : 
+                myExam?.exam?.calculatedExams?.map((item) => {
+                    return (
+                        <>
+                            <MyExam item={item} isCalculated={true}/>
                         </>
                     )
                 })

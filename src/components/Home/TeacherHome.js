@@ -31,8 +31,8 @@ const TeacherHome = () => {
 
   // useEffect
   useEffect(() => {
-    console.log(questions);
-  }, [questions]);
+    console.log(questions, user);
+  }, [questions, user]);
 
   useEffect(async () => {
     await dispatch(getQuestions());

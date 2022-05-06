@@ -12,6 +12,7 @@ const Home = (props) => {
 
   useEffect(async ()=>{
     await dispatch(loadUser())
+    console.log(user)
   }, [])
 
   return (

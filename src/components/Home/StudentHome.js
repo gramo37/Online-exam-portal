@@ -6,6 +6,7 @@ import EditProfileEmailForm from "./Profile/EditProfileEmail";
 import Modal from "../Modal/Modal";
 import { getExam } from "../../redux/actions/schoolAction";
 import Exam from "./Exam/Exam";
+import SearchPerson from "./SearchPerson";
 
 const StudentHome = () => {
   const user = useSelector((state) => state.user);
@@ -29,9 +30,19 @@ const StudentHome = () => {
     <>
       <div className="flex justify-center items-start">
         <div className="slowLoad flex flex-col  w-4/6">
-          {exam?.exam?.exams?.map((item) => {
-            return (<Exam key={item._id} id={item._id} exam={item} />)
-          })}
+      <SearchPerson searchFor="Teacher" />
+          <h2 className="text-center mt-2 text-lg font-bold">Remaining Exams</h2>
+          <div className="">
+            {exam?.exam?.exams?.length === 0 ? <h2 className="text-center mt-2 italic">No Exams to display</h2> : exam?.exam?.exams?.map((item) => {
+              return (<Exam key={item._id} id={item._id} exam={item} isCompleted={false}/>)
+            })}
+          </div>
+          <h2 className="text-center mt-2 text-lg font-bold">Completed Exams</h2>
+          <div className="">
+            {exam?.exam?.completedExams?.length === 0 ? <h2 className="text-center mt-2 italic">No Exams to display</h2> : exam?.exam?.completedExams?.map((item) => {
+              return (<Exam key={item._id} id={item._id} exam={item} isCompleted={true}/>)
+            })}
+          </div>
         </div>
         <div className={`w-2/6 sticky top-20 right-0 mx-2 flex flex-col`}>
           <div className="bg-white border-2 shadow-sm my-2 p-3 rounded-md">

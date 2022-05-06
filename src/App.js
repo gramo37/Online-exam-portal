@@ -20,6 +20,9 @@ import StudentProfile from './components/profiles/StudentProfile';
 import ShowMyStudents from './components/profiles/ShowMyStudents';
 import StartExam from './components/Home/Exam/StartExam';
 import MyExams from './components/Home/Exam/MyExams';
+import DisplayScores from './components/Scores/DisplayScores';
+import Results from './components/Home/Exam/Results';
+import TeacherProfile from './components/profiles/TeacherProfile';
 
 function App() {
 
@@ -36,9 +39,12 @@ function App() {
         <Routes>
           <Route exact path="/home" element={<Home />} />
           <Route exact path="/student/:id" element={<StudentProfile />} />
+          <Route exact path="/teacher/:id" element={<TeacherProfile />} />
           <Route exact path="/studentsList" element={<ShowMyStudents />} />
           <Route exact path="/exam/start/:examId" element={<StartExam />}/>
+          <Route exact path="exam/get/score/:examId" element={<DisplayScores />} />
           <Route exact path="/myExams" element={<MyExams />}/>
+          <Route exact path="/exam/results/:examId" element={<Results />}/>
           <Route exact path="/about" element={<About />} />
           <Route exact path="/contact" element={<Contact />} />
           <Route exact path="/signup" element={<Signup />} />

@@ -16,6 +16,21 @@ export const schoolReducer = createReducer({}, {
         state.student = ""
         state.error = action.payload
         state.loading = false
+    },
+    RequireGetTeachers: (state) => {
+        state.student = ""
+        state.error = ""
+        state.loading = true
+    },
+    GetTeacherSuccess: (state, action) => {
+        state.student = action.payload
+        state.error = ""
+        state.loading = false
+    },
+    GetTeacherFail: (state, action) => {
+        state.student = ""
+        state.error = action.payload
+        state.loading = false
     }
 })
 
@@ -129,6 +144,11 @@ export const sendAnswersReducer = createReducer({}, {
         state.loading = false
         state.error = action.payload
         state.status = ""
+    },
+    clearSendAnswer: (state) => {
+        state.loading = false
+        state.error = ""
+        state.status = ""
     }
 })
 
@@ -144,6 +164,21 @@ export const scoreReducer = createReducer({}, {
         state.score = action.payload
     },
     CalScoreFailure: (state, action) => {
+        state.loading = false
+        state.error = action.payload
+        state.score = ""
+    },
+    RequireGetScore: (state) => {
+        state.loading = true
+        state.error = ""
+        state.score = ""
+    },
+    GetScoreSuccess: (state, action) => {
+        state.loading = false
+        state.error = ""
+        state.score = action.payload
+    },
+    GetScoreFailure: (state, action) => {
         state.loading = false
         state.error = action.payload
         state.score = ""

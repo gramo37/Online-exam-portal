@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import SearchIcon from "@mui/icons-material/Search";
-import { addRemoveStudent, searchStudent } from "../../redux/actions/schoolAction";
+import { addRemoveStudent, searchStudent, searchTeacher } from "../../redux/actions/schoolAction";
 import { loadUser } from "../../redux/actions/userAction";
-import { Link } from "react-router-dom";
+
+import SuggestionBox from "./SuggestionBox";
 
 const SearchPerson = (props) => {
 
@@ -11,13 +12,17 @@ const SearchPerson = (props) => {
   const dispatch = useDispatch()
   const school = useSelector((state) => state.school)
   const user = useSelector((state) => state.user);
-  const message = useSelector((state)=>state.addStudent);
+  const message = useSelector((state) => state.addStudent);
 
   useEffect(async () => {
     console.log(school, keyword)
     console.log(user)
     console.log(message)
-    await dispatch(searchStudent(keyword))
+    if (props.searchFor === "Teacher") {
+      await dispatch(searchTeacher(keyword))
+    } else if (props.searchFor === "Student") {
+      await dispatch(searchStudent(keyword))
+    }
   }, [keyword, message])
 
   return (
@@ -42,24 +47,16 @@ const SearchPerson = (props) => {
           } mx-2 p-3 rounded-md bg-white border-2 shadow-sm`}
       >
         <ul className="">
-          {school?.student?.students?.map((item) => {
+          {props.searchFor === "Student" && school?.student?.students?.map((item) => {
             return (
-              <li className="flex justify-between items-center p-2 font-bold cursor-pointer rounded-md transition-all hover:bg-gray-200">
-                <Link to={`/student/${item._id}`}>
-                <div>
-                  <div>
-                    {item?.name}
-                  </div>
-                  <div className="italic font-thin">
-                    {item?.email}
-                  </div>
-                </div>
-                </Link>
-              </li>
+              <SuggestionBox linkTo="student" item={item}/>
             )
           })}
-
-
+          {props.searchFor === "Teacher" && school?.student?.teachers?.map((item) => {
+            return (
+              <SuggestionBox linkTo="teacher" item={item}/>
+            )
+          })}
         </ul>
       </div>
     </>

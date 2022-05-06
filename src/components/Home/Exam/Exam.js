@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom'
 
 const Exam = (props) => {
-  const { exam, id } = props
+  const { exam, isCompleted } = props
   useEffect(() => {
     console.log(exam)
   }, [])
@@ -21,7 +21,7 @@ const Exam = (props) => {
           </div>
         </div>
         <div className='mt-2 flex items-center justify-center'>
-        <Link to={`/exam/start/${exam.id}`} ><button className='bg-blue-400 hover:bg-blue-300 p-2 rounded-md'>Start Exam</button></Link>
+        <Link to={isCompleted ? `/exam/get/score/${exam.id}` : `/exam/start/${exam.id}`} ><button className='bg-blue-400 hover:bg-blue-300 p-2 rounded-md'>{isCompleted ? "Get Result" : "Start Exam"}</button></Link>
         </div>
       </div>
     </>

@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { useAlert } from 'react-alert'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router'
-import { sendAnswers, takeExam } from '../../../redux/actions/schoolAction'
+import { useNavigate, useParams } from 'react-router'
+import { clearSendAnswer, sendAnswers, takeExam } from '../../../redux/actions/schoolAction'
 import DisplayQuestions from './DisplayQuestions'
 
 const StartExam = () => {
   const { examId } = useParams()
   const dispatch = useDispatch()
+  const alert = useAlert()
+  const navigate = useNavigate()
+
+  const sendAnswer = useSelector((state)=>state.sendAnswer)
   const exam = useSelector((state) => state.takeExam)
 
   const [answers, setAnswers] = useState([])
@@ -24,8 +29,27 @@ const StartExam = () => {
 
   useEffect(() => {
     console.log(exam)
+    if(!exam.loading) {
+      if(exam.error !== "" && exam.status === "") {
+        alert.error(exam.error.message)
+        navigate("/home")
+      }
+    }
   }, [exam])
 
+  useEffect(async ()=>{
+    if(!sendAnswer.loading) {
+      if(sendAnswer.error === "" && sendAnswer.status !== "") {
+        alert.success("Exam Submitted Successfully.")
+        await dispatch(clearSendAnswer())
+        navigate("/home")
+      }
+      else if(sendAnswer.error !== "" && sendAnswer.status === "") {
+        alert.error("Something went wrong")
+      }
+    }
+    console.log(sendAnswer)
+  }, [sendAnswer])
 
   return (
     <>

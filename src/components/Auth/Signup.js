@@ -7,7 +7,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { useDispatch, useSelector } from "react-redux";
-import { storeSignInDetails, sendOTP } from "../../redux/actions/userAction";
+import { storeSignInDetails, sendOTP, signInUser } from "../../redux/actions/userAction";
 import { useAlert } from "react-alert";
 var passwordValidator = require("password-validator");
 
@@ -30,15 +30,29 @@ const Signup = () => {
 
   // }, [])
 
+  // Direct Signin
   useEffect(() => {
-    console.log(user, otpStatus)
-    if (otpStatus.error !== "" && otpStatus.error !== undefined) {
-      alert.error(otpStatus.error.message);
-    } else if (otpStatus.otpStatus && otpStatus.otpStatus !== undefined) {
-      alert.success(otpStatus.otpStatus.message);
-      navigate("/verifyOTP");
+    if(user.loading !==undefined && !user.loading) {
+      if(!user.error !== undefined && user.error !== "") {
+        alert.show(user.error.message)
+      } else if (user.user !== undefined && user.user !== "" && user.user.success) {
+        alert.success("Signin Successful")
+        navigate("/home")
+      }
     }
-  }, [user, otpStatus]);
+    console.log(user, user.loading)
+  }, [user])
+
+  // Un comment when sending otp
+  // useEffect(() => {
+  //   console.log(user, otpStatus)
+  //   if (otpStatus.error !== "" && otpStatus.error !== undefined) {
+  //     alert.error(otpStatus.error.message);
+  //   } else if (otpStatus.otpStatus && otpStatus.otpStatus !== undefined) {
+  //     alert.success(otpStatus.otpStatus.message);
+  //     navigate("/verifyOTP");
+  //   }
+  // }, [user, otpStatus]);
 
   const [userCredentials, setUserCredentials] = useState({
     name: "",
@@ -110,7 +124,16 @@ const Signup = () => {
     );
     setProgress(80);
     // Send OTP
-    await dispatch(sendOTP(userCredentials.email));
+    // await dispatch(sendOTP(userCredentials.email));
+    // Direct Signin
+    await dispatch(signInUser(
+      {
+        name: userCredentials.name,
+        email: userCredentials.email,
+        password: userCredentials.password,
+      },
+      role
+    ))
     setProgress(100);
   };
 
