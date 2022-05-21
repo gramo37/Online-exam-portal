@@ -1,7 +1,7 @@
 const axios = require("axios");
 
-const host = `http://localhost:5000`
-// const host = `http://54.147.132.26:5000`
+// const host = `http://localhost:5000`
+const host = `http://54.147.132.26:5000`
 
 function setCookie(cname, cvalue, exdays) {
   const d = new Date();

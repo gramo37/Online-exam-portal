@@ -1,7 +1,7 @@
 import axios from "axios"
 
-// const host = `http://54.147.132.26:5000`
-const host = `http://localhost:5000`
+const host = `http://54.147.132.26:5000`
+// const host = `http://localhost:5000`
 
 function getCookie(cname) {
     let name = cname + "=";
